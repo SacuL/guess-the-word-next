@@ -4,6 +4,13 @@
   font-weight: normal;
   margin-bottom: 2rem;
 }
+.notCloseWord{
+  color: rgb(230, 154, 154);
+}
+.closeWord{
+  color: rgb(230, 154, 154);
+  text-decoration: underline;
+}
 
 @keyframes victory {
   0% {
@@ -62,7 +69,6 @@
   font-family: verdana;
 }
 .guess {
-  color: rgb(230, 154, 154);
   max-height: 8lh;
   overflow: auto;
   font-size: 1.25rem;

@@ -66,9 +66,9 @@ export default function Home() {
         setHasFoundWord(true);
         setUserMessage("");
       } else {
-        if (!guesses.map(x => x.word).includes(word)) {
+        if (!guesses.map((x) => x.word).includes(word)) {
           const isClose = isWordClose(word, randomWord);
-          setGuesses([{ "word": word, "isClose": isClose }, ...guesses]);
+          setGuesses([{ word: word, isClose: isClose }, ...guesses]);
           setUserMessage("");
         } else {
           setUserMessage(`${word} was already guessed! Try again.`);
@@ -121,10 +121,22 @@ export default function Home() {
 
       <div className={styles.guess}>
         <ul>
-          {guesses.length > 0 && guesses.map((g) => <li key={g.word}>{g.word} {g.isClose && <span> is close!</span>}</li>)}
+          {guesses.length > 0 &&
+            guesses.map((g) => (
+              <li key={g.word}>
+                {!g.isClose && (
+                  <span className={styles.notCloseWord}>{g.word}</span>
+                )}{" "}
+                {g.isClose && (
+                  <>
+                    <span className={styles.closeWord}>{g.word}</span>
+                    <span> is close!</span>{" "}
+                  </>
+                )}
+              </li>
+            ))}
         </ul>
       </div>
-
     </main>
   );
 }
