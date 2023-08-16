@@ -14,7 +14,7 @@ export default function Home() {
   const [randomWord, setRandomWord] = useState("");
   const [dictionaryEntry, setDictionaryEntry] = useState({});
 
-  const [definition, setDefinition] = useState("");
+  const [definition, setDefinition] = useState({});
 
   const clearFields = () => {
     setHasFoundWord(false);
@@ -50,10 +50,26 @@ export default function Home() {
   };
 
   const extractDefinition = (dict) => {
-    const partOfSpeech = dict.meanings[0].partOfSpeech;
-    const definition = dict.meanings[0].definitions[0].definition;
+    for (const meanings of dict.meanings) {
+      const partOfSpeech = meanings.partOfSpeech; // verb, noun, etc
 
-    setDefinition(`${partOfSpeech}: ${definition}`);
+      console.log(`Trying to add ${partOfSpeech} to definition`);
+      console.log({ "Current definition is:": definition });
+
+      for (const meaning of meanings.definitions) {
+        const wordDefinition = meaning.definition;
+        if (partOfSpeech in definition) {
+          definition[partOfSpeech] = [
+            wordDefinition,
+            ...definition[partOfSpeech],
+          ];
+        } else {
+          definition[partOfSpeech] = [wordDefinition];
+        }
+        setDefinition(definition);
+      }
+      console.log({ "def after": definition });
+    }
   };
 
   useEffect(updateWord, []);
@@ -90,8 +106,18 @@ export default function Home() {
       <h1 className={styles.title}>Guess the word</h1>
 
       <div>
-        <p className={styles.definitionTitle}>Definition</p>
-        <p className={styles.definition}>{definition}</p>
+        {Object.keys(definition).map((partOfSpeech, i) => {
+          return (
+            <div key={partOfSpeech}>
+              <span>{partOfSpeech}:</span>
+              <div>
+                {definition[partOfSpeech].map((definitions, j) => {
+                  return <li key={`${i}${j}`}>{definitions}</li>;
+                })}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div className={styles.userInputDiv}>
